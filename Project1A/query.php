@@ -2,14 +2,14 @@
 <html>
 <body>
 <h2>CS143 Project1a</h2>
-<h3>Winter 2018</h3>
-<h3>Yifan Shu (uid: 005228229) & Chengshun Zhang (uid: )</h3>
+<h3>Winter 2019</h3>
+<h3>Yifan Shu (uid: 005228229) & Chengshun Zhang (uid: 905061060)</h3>
 </body>
 
-<FORM METHOD = "POST" ACTION = "./query.php">
-    <TEXTAREA NAME="query" ROWS=25 COLS=50></TEXTAREA>
-    <input type="submit" name="submit" value="Submit">  
-</FORM>
+<form action="query.php" method="GET">
+    <textarea name="query" rows="8" cols="60"><?php print "$query" ?></textarea><br />
+    <input type="submit" value="Submit" />  
+</form>
 
 
 <?php 
@@ -17,11 +17,11 @@ $servername = "localhost";
 $username = "cs143";
 $password = "";
  
-// 创建连接
+// create connection
 
 $conn = mysql_connect($servername, $username, $password);
  
-// 检测连接
+// check the connection
 if (!$conn) {
     echo "Unable to connect to the sql server.";
     die();
@@ -32,8 +32,8 @@ if (!mysql_select_db("CS143", $conn)){
     die();
 }
 
-echo $_POST["query"];
-$output = mysql_query($_POST["query"], $conn);
+echo $_GET["query"];
+$output = mysql_query($_GET["query"], $conn);
 mysql_close($conn);
 displayResult($output);
 
