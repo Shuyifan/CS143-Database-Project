@@ -111,13 +111,19 @@ function displayResult($data1, $type) {
         while ($row = mysql_fetch_row($data1)) {
             echo "<tr>";
             for ($j = 0; $j < mysql_num_fields($data1); $j ++) {
-                echo "<th>";
-                if ($row[$j] == null) {
-                    echo "NULL";
-                } else {
-                    echo $row[$j];
-                }
-                echo "</th>";
+                echo "<td>";
+				if($j == 1) {
+					echo "<a href= '". $type . ".php" . "?" . $type . "=" . $row[$j] . "'>";
+					echo $row[$j];
+					echo "</a>";
+				} else {
+					if ($row[$j] == null) {
+						echo "NULL";
+					} else {
+						echo $row[$j];
+					}
+				}
+                echo "</td>";
             }
             echo "</tr>";
         }
