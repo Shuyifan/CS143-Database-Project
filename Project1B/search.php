@@ -45,7 +45,7 @@ if($keyword) {
 								OR LOWER(last) like LOWER('%%%s%%')",
 								$pieces[0], $pieces[0]);
 				$output = mysql_query($query, $conn);
-				displayResult($output);
+				displayResult($output, "actor");
 			} else if(count($pieces) == 2) {
 				$query = sprintf("SELECT id, CONCAT(first, ' ', last) AS name, sex, dob, dod
 								FROM Actor
@@ -53,7 +53,7 @@ if($keyword) {
 								AND LOWER(last) like LOWER('%%%s%%')",
 								$pieces[0], $pieces[1]);
 				$output = mysql_query($query, $conn);
-				displayResult($output);
+				displayResult($output, "actor");
 			}
 		} else { // Do the multi-word search on actor
 			$pieces = explode(" ", $keyword);
@@ -67,7 +67,7 @@ if($keyword) {
 				$query = $query.$extend;
 			}
 			$output = mysql_query($query, $conn);
-			displayResult($output);
+			displayResult($output, "actor");
 		}
 	}
 
@@ -79,7 +79,7 @@ if($keyword) {
 							WHERE LOWER(title) LIKE LOWER('%%%s%%')",
 							$keyword);
 			$output = mysql_query($query, $conn);
-			displayResult($output);
+			displayResult($output, "movie");
 		} else { // Do the multi-word search on movie
 			$pieces = explode(" ", $keyword);
 			$query = sprintf("SELECT id, title, year, rating, company
@@ -92,21 +92,21 @@ if($keyword) {
 				$query = $query.$extend;
 			}
 			$output = mysql_query($query, $conn);
-			displayResult($output);
+			displayResult($output, "movie");
 		}
 	}
 
 	mysql_close($conn);
 }
 
-function displayResult($data1) {
+function displayResult($data1, $type) {
     if (mysql_num_rows($data1) > 0) {
         echo "<table border=1  <tr>";
         for ($i=0; $i < mysql_num_fields($data1); $i++){
             echo "<th>";
             echo mysql_fetch_field($data1)->name;
             echo "</th>";
-        }
+		}
         echo "</tr>";
         while ($row = mysql_fetch_row($data1)) {
             echo "<tr>";
