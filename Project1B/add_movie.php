@@ -1,9 +1,16 @@
 <html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="main.css">
+	</head>
 	<body>
 		<h1> Add New Movie </h1>
-		<a href="add_actor_director.php"> Add Actor/Director </a>
-		<a href="add_movie.php"> Add a New Movie </a>
-		<a href="add_comments.php"> Add New Comments </a>
+		<div class="nav">
+			<a href="add_actor_director.php"> Add Actor/Director </a>
+			<a href="add_movie.php"> Add a New Movie </a>
+			<a href="add_comments.php"> Add New Comments </a>
+			<a href="add_movieactor.php"> Add a New Actor to a Movie </a>
+			<a href="search.php"> Search </a>
+		</div>
 		<h3> Adding a new movie to the database: </h3>
 		<form action="add_movie.php" method="GET">
 		    Title: <input type="text" name="Title" value="" size=20 maxlength=20>
@@ -40,49 +47,54 @@
 		    	   <input type="radio" name="Genre" value="War"> War
 		    	   <input type="radio" name="Genre" value="Western"> Western
 		    <br>
-		    <input type="submit" value="Submit">
+		    <input type="submit" name="add" value="Submit">
 		</form>
 	</body>
 
 	<?php
-		$db_connection = mysql_connect("localhost", "cs143", "");
-		if(!$db_connection) {
-		    $errmsg = mysql_error($db_connection);
-		    print "Connection failed: " . $errmsg . "<br>";
-		    exit(1);
-		}
+		if(isset($_GET["add"])) {
+			$db_connection = mysql_connect("localhost", "cs143", "");
+			if(!$db_connection) {
+			    $errmsg = mysql_error($db_connection);
+			    print "Connection failed: " . $errmsg . "<br>";
+			    exit(1);
+			}
 
-		$db_selected = mysql_select_db("CS143", $db_connection);
-		if(!db_selected) {
-			$errmsg = mysql_error($db_selected);
-		    print "Unable to select the database: " . $errmsg . "<br>";
-		    exit(1);
-		}
+			$db_selected = mysql_select_db("CS143", $db_connection);
+			if(!db_selected) {
+				$errmsg = mysql_error($db_selected);
+			    print "Unable to select the database: " . $errmsg . "<br>";
+			    exit(1);
+			}
 
-		$query = "select * from MaxMovieID";
-		$rs = mysql_query($query, $db_connection);
-		$new_id = mysql_fetch_row($rs)[0] + 1;
+			$query = "select * from MaxMovieID";
+			$rs = mysql_query($query, $db_connection);
+			$new_id = mysql_fetch_row($rs)[0] + 1;
 
-		$sanitized_title = mysql_real_escape_string($_GET["Title"], $db_connection);
-		$year = $_GET["Year"];
-		$rating = $_GET["Rating"];
-		$sanitized_company = mysql_real_escape_string($_GET["Company"], $db_connection);
-		$genre = $_GET["Genre"];
+			$sanitized_title = mysql_real_escape_string($_GET["Title"], $db_connection);
+			$year = $_GET["Year"];
+			$rating = $_GET["Rating"];
+			$sanitized_company = mysql_real_escape_string($_GET["Company"], $db_connection);
+			$genre = $_GET["Genre"];
 
-		$query = "insert into Movie (id, title, year, rating, company) values
-					($new_id, '$sanitized_title', $year, '$rating', '$sanitized_company')";
-		$rs = mysql_query($query, $db_connection);
+			$query = "insert into Movie (id, title, year, rating, company) values
+						($new_id, '$sanitized_title', $year, '$rating', '$sanitized_company')";
+			$rs = mysql_query($query, $db_connection);
 
-		$query = "insert into MovieGenre (mid, genre) values
-					($new_id, '$genre')";
-		$rs = mysql_query($query, $db_connection);
+			$query = "insert into MovieGenre (mid, genre) values
+						($new_id, '$genre')";
+			$rs = mysql_query($query, $db_connection);
 
-		if($rs) {
-			$query = "update MaxMovieID set id = $new_id";
-			mysql_query($query, $db_connection);
-			echo "New movie successfully added!";
+			if($rs) {
+				$query = "update MaxMovieID set id = $new_id";
+				mysql_query($query, $db_connection);
+				echo "New movie successfully added!";
+			} else {
+				echo "Insertion failed!";
+			}
+			
+			mysql_close($db_connection);
 		}
 		
-		mysql_close($db_connection);
 	?>
 </html>

@@ -1,0 +1,13 @@
+h1 {
+	text-align: center;
+}
+
+.nav {
+	text-align: center;
+}
+
+a {
+	border: 1px solid black;
+	padding: 2px;
+	text-decoration: none;
+}

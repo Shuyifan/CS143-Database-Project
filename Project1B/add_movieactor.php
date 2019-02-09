@@ -3,7 +3,7 @@
 		<link rel="stylesheet" type="text/css" href="main.css">
 	</head>
 	<body>
-		<h1> Add New Comments </h1>
+		<h1> Add New Actor to a movie! </h1>
 		<div class="nav">
 			<a href="add_actor_director.php"> Add Actor/Director </a>
 			<a href="add_movie.php"> Add a New Movie </a>
@@ -11,9 +11,11 @@
 			<a href="add_movieactor.php"> Add a New Actor to a Movie </a>
 			<a href="search.php"> Search </a>
 		</div>
-		<h3> Adding a new comment to the database: </h3>
-		<form action="add_comments.php" method="GET">
-		    UserName: <input type="text" name="Username" value="" size=20 maxlength=20>
+		<h3> Adding a new actor to the movie: </h3>
+		<form action="add_movieactor.php" method="GET">
+		    FirstName: <input type="text" name="Firstname" placeholder="firstname" size=20 maxlength=20>
+		    <br>
+		    LastName: <input type="text" name="Lastname" placeholder="lastname" size=20 maxlength=20>
 		    <br>
 		    Movie: <?php
 		    		   
@@ -44,16 +46,7 @@
 		    	       
 		    	   ?>
 		    <br>
-		    Rating: <select name="Rating">
-		    			<option> 5 </option>
-		    			<option> 4 </option>
-		    			<option> 3 </option>
-		    			<option> 2 </option>
-		    			<option> 1 </option>
-		    		</select>
-		    <br>
-		    <br>
-		    Comment: <textarea name="Comment" rows=8 cols=60 maxlength="500"></textarea>
+		    Role in the movie: <input type="text" name="Role" size=20 maxlength=50>
 		    <br>
 		    <input type="submit" name="add" value="Submit">
 		</form>
@@ -75,21 +68,29 @@
 			    exit(1);
 			}
 			
-			$sanitized_username = mysql_real_escape_string($_GET["Username"], $db_connection);
-			$moviename = $_GET["Movie"];
-			$query = "select id from Movie where title = '$moviename'";
-			$mid = mysql_fetch_row(mysql_query($query, $db_connection))[0];
-			$rating = $_GET["Rating"];
-			$comment = $_GET["Comment"];
-
-			$query = "insert into Review (name, time, mid, rating, comment) values
-						('$sanitized_username', NOW(), $mid, $rating, '$comment')";
+			$sanitized_firstname = mysql_real_escape_string($_GET["Firstname"], $db_connection);
+			$sanitized_lastname = mysql_real_escape_string($_GET["Lastname"], $db_connection);
+			$query = "select id from Actor where last = '$sanitized_lastname' and
+					first = '$sanitized_firstname'";
 			$rs = mysql_query($query, $db_connection);
 			if($rs) {
-				echo "New comment successfully added!";
+				$aid = mysql_fetch_row($rs)[0];
+				$moviename = $_GET["Movie"];
+				$query = "select id from Movie where title = '$moviename'";
+				$mid = mysql_fetch_row(mysql_query($query, $db_connection))[0];
+				$sanitized_role = mysql_real_escape_string($_GET["Role"], $db_connection);
+				$query = "insert into MovieActor (mid, aid, role) values
+						($mid, $aid, '$sanitized_role')";
+				$rs = mysql_query($query, $db_connection);
+				if($rs) {
+					echo "New actor in a movie successfully added!";
+				} else {
+					echo "The actor not found! Please add the actor to database first!";
+				}
 			} else {
-				echo "Comment failed!";
+				echo "Insertion failed!";
 			}
+			
 
 			mysql_close($db_connection);
 		}
