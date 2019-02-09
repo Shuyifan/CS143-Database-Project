@@ -25,26 +25,26 @@ if($actor) {
 					  WHERE LOWER(CONCAT(first, ' ', last)) = LOWER('%s')",
 		     		  $actor);
 	$output = mysql_query($query, $conn);
-	displayResult($output, "movie", false, 1);
+	displayResult($output, "actor", false, 1);
 
-	$query = 	$query = sprintf("SELECT title, year, shownMovie.name, shownMovie.role, rating, company
-								  FROM Movie,
-								  (
-								  	SELECT mid, target.name, role
-								  	FROM MovieActor,
-								  	(
-								  		SELECT id, CONCAT(first, ' ', last) AS name
-								  		FROM Actor 
-								  		WHERE LOWER(CONCAT(first, ' ', last)) = LOWER('%s')
-								  	) AS target
-								  	WHERE target.id = MovieActor.aid
-								  ) AS shownMovie
-								  WHERE Movie.id = shownMovie.mid
-								  ORDER BY year",
-								  $actor);
+	$query = sprintf("SELECT title, year, shownMovie.name, shownMovie.role, rating, company
+					  FROM Movie,
+					  (
+					  	SELECT mid, target.name, role
+					  	FROM MovieActor,
+					  	(
+					  		SELECT id, CONCAT(first, ' ', last) AS name
+					  		FROM Actor 
+					  		WHERE LOWER(CONCAT(first, ' ', last)) = LOWER('%s')
+					  	) AS target
+					  	WHERE target.id = MovieActor.aid
+					  ) AS shownMovie
+					  WHERE Movie.id = shownMovie.mid
+					  ORDER BY year",
+					  $actor);
 
 	$output = mysql_query($query, $conn);
-	displayResult($output, "actor", true, 0);
+	displayResult($output, "movie", true, 0);
 
 
 }
