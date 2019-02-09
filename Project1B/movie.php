@@ -19,7 +19,11 @@ if($movie) {
 		echo "Unable to select the data base 'CS143'";
 		die();
 	}
+
+/**------------------------------------------------------------------------------------------------------- */
+// Print basic movie information	
 	
+	echo "<h3>Actor's basic information:</h3>";
 	$query = sprintf("SELECT id, title, year, rating AS `MPAA rating`, company
 					  FROM Movie
 					  WHERE LOWER(title) = LOWER('%s')",

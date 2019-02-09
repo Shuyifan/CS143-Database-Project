@@ -19,6 +19,11 @@ if($actor) {
 		echo "Unable to select the data base 'CS143'";
 		die();
 	}
+
+/**------------------------------------------------------------------------------------------------------- */
+// Print basic actor information	
+	
+	echo "<h3>Actor's basic information:</h3>";
 	
 	$query = sprintf("SELECT id, CONCAT(first, ' ', last) AS name, sex, dob, dod
 					  FROM Actor
@@ -26,6 +31,11 @@ if($actor) {
 		     		  $actor);
 	$output = mysql_query($query, $conn);
 	displayResult($output, "actor", false, 1);
+
+/**------------------------------------------------------------------------------------------------------- */
+// Print the movie list where the actor attend
+
+	echo "<h3>The movies that the actor was in:</h3>";
 
 	$query = sprintf("SELECT title, year, shownMovie.name, shownMovie.role, rating, company
 					  FROM Movie,
@@ -42,11 +52,13 @@ if($actor) {
 					  WHERE Movie.id = shownMovie.mid
 					  ORDER BY year",
 					  $actor);
-
+	
 	$output = mysql_query($query, $conn);
-	displayResult($output, "movie", true, 0);
-
-
+	if(mysql_num_rows($output) == 0) {
+		echo "This actor haven't been in any movie.";
+	} else {
+		displayResult($output, "movie", true, 0);
+	}
 }
 
 
