@@ -77,8 +77,8 @@
 				$moviename = $_GET["Movie"];
 				$query = "select id from Movie where title = '$moviename'";
 				$mid = mysql_fetch_row(mysql_query($query, $db_connection))[0];
-				$query = "insert into MovieDirector (mid, aid) values
-						($mid, $aid)";
+				$query = "insert into MovieDirector (mid, did) values
+						($mid, $did)";
 				$rs = mysql_query($query, $db_connection);
 				if($rs) {
 					echo "New director in a movie successfully added!";
