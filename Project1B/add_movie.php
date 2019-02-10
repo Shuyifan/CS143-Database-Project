@@ -28,25 +28,25 @@
 		    <br>
 		    Company: <input type="text" name="Company" size=20 maxlength=20>
 		    <br>
-		    Genre: <input type="checkbox" name="Genre" value="Action"> Action
-		    	   <input type="checkbox" name="Genre" value="Adult"> Adult
-		    	   <input type="checkbox" name="Genre" value="Adventure"> Adventure
-		    	   <input type="checkbox" name="Genre" value="Animation"> Animation
-		    	   <input type="checkbox" name="Genre" value="Comedy"> Comedy
-		    	   <input type="checkbox" name="Genre" value="Crime"> Crime
-		    	   <input type="checkbox" name="Genre" value="Documentary"> Documentary
-		    	   <input type="checkbox" name="Genre" value="Drama"> Drama
-		    	   <input type="checkbox" name="Genre" value="Family"> Family
-		    	   <input type="checkbox" name="Genre" value="Fantasy"> Fantasy
-		    	   <input type="checkbox" name="Genre" value="Horror"> Horror
-		    	   <input type="checkbox" name="Genre" value="Musical"> Musical
-		    	   <input type="checkbox" name="Genre" value="Mystery"> Mystery
-		    	   <input type="checkbox" name="Genre" value="Romance"> Romance
-		    	   <input type="checkbox" name="Genre" value="Sci-Fi"> Sci-Fi
-		    	   <input type="checkbox" name="Genre" value="Short"> Short
-		    	   <input type="checkbox" name="Genre" value="Thriller"> Thriller
-		    	   <input type="checkbox" name="Genre" value="War"> War
-		    	   <input type="checkbox" name="Genre" value="Western"> Western
+		    Genre: <input type="checkbox" name="Genre[]" value="Action"> Action
+		    	   <input type="checkbox" name="Genre[]" value="Adult"> Adult
+		    	   <input type="checkbox" name="Genre[]" value="Adventure"> Adventure
+		    	   <input type="checkbox" name="Genre[]" value="Animation"> Animation
+		    	   <input type="checkbox" name="Genre[]" value="Comedy"> Comedy
+		    	   <input type="checkbox" name="Genre[]" value="Crime"> Crime
+		    	   <input type="checkbox" name="Genre[]" value="Documentary"> Documentary
+		    	   <input type="checkbox" name="Genre[]" value="Drama"> Drama
+		    	   <input type="checkbox" name="Genre[]" value="Family"> Family
+		    	   <input type="checkbox" name="Genre[]" value="Fantasy"> Fantasy
+		    	   <input type="checkbox" name="Genre[]" value="Horror"> Horror
+		    	   <input type="checkbox" name="Genre[]" value="Musical"> Musical
+		    	   <input type="checkbox" name="Genre[]" value="Mystery"> Mystery
+		    	   <input type="checkbox" name="Genre[]" value="Romance"> Romance
+		    	   <input type="checkbox" name="Genre[]" value="Sci-Fi"> Sci-Fi
+		    	   <input type="checkbox" name="Genre[]" value="Short"> Short
+		    	   <input type="checkbox" name="Genre[]" value="Thriller"> Thriller
+		    	   <input type="checkbox" name="Genre[]" value="War"> War
+		    	   <input type="checkbox" name="Genre[]" value="Western"> Western
 		    <br>
 		    <input type="submit" name="add" value="Submit">
 		</form>
@@ -76,15 +76,18 @@
 			$year = $_GET["Year"];
 			$rating = $_GET["Rating"];
 			$sanitized_company = mysql_real_escape_string($_GET["Company"], $db_connection);
-			$genre = $_GET["Genre"];
+			$genres = $_GET["Genre"];
 
 			$query = "insert into Movie (id, title, year, rating, company) values
 						($new_id, '$sanitized_title', $year, '$rating', '$sanitized_company')";
 			$rs = mysql_query($query, $db_connection);
 
-			$query = "insert into MovieGenre (mid, genre) values
-						($new_id, '$genre')";
-			$rs = mysql_query($query, $db_connection);
+			for($i = 0; $i < count($genres); $i++) {
+				$query = "insert into MovieGenre (mid, genre) values
+						($new_id, '$genres[$i]')";
+				$rs = mysql_query($query, $db_connection);
+			}
+			
 
 			if($rs) {
 				$query = "update MaxMovieID set id = $new_id";

@@ -12,12 +12,8 @@
 			<a href="add_moviedirector.php"> Add a New Director to a Movie </a>
 			<a href="search.php"> Search </a>
 		</div>
-		<canvas id="canvas">
-			
-		</canvas>
-
-		<script type="text/javascript" src="main.js">
-
-    	</script>
+		<h2> A big fan of movie? You are at the right place! </h2>
+		<h3> Search the movie or actor you love to get detailed information! </h3>
+		<h3> Also feel free to add information about movies you know! </h3>
 	</body>
 </html>

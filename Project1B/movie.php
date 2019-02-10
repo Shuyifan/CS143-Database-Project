@@ -1,5 +1,17 @@
 <html>
+<head>
+	<link rel="stylesheet" type="text/css" href="main.css">
+</head>
 
+<h1> Movie information </h1>
+<div class="nav">
+	<a href="add_actor_director.php"> Add Actor/Director </a>
+	<a href="add_movie.php"> Add a New Movie </a>
+	<a href="add_comments.php"> Add New Comments </a>
+	<a href="add_movieactor.php"> Add a New Actor to a Movie </a>
+	<a href="add_moviedirector.php"> Add a New Director to a Movie </a>
+	<a href="search.php"> Search </a>
+</div>
 <body>
 <?php
 
@@ -23,7 +35,7 @@ if($movie) {
 /**------------------------------------------------------------------------------------------------------- */
 // Print basic movie information	
 	
-	echo "<h3>Actor's basic information:</h3>";
+	echo "<h3>Movie's basic information:</h3>";
 	$query = sprintf("SELECT id, title, year, rating AS `MPAA rating`, company
 					  FROM Movie
 					  WHERE LOWER(title) = LOWER('%s')",
@@ -42,7 +54,9 @@ if($movie) {
 					  WHERE directorID.did = Director.id",
 					  $movie);
 	$output = mysql_query($query, $conn);
-	displayResult($output, "movie", false, 1);	
+	if(!displayResult($output, "movie", false, 1)) {
+		echo "No director information found!";
+	}
 
 	$query = sprintf("SELECT genre
 					  FROM Movie, MovieGenre
@@ -89,7 +103,9 @@ if($movie) {
 					  $movie);
 
 	$output = mysql_query($query, $conn);
-	displayResult($output, "actor", false, 1);
+	if(!displayResult($output, "actor", false, 1)) {
+		echo "No user rating! <br>";
+	}
 	
 	$query = sprintf("SELECT name, time, rating, comment
 					  FROM Review,
@@ -103,11 +119,13 @@ if($movie) {
 					  $movie);
 
 	$output = mysql_query($query, $conn);
-	displayResult($output, "actor", false, 1);
+	if(!displayResult($output, "actor", false, 1)) {
+		echo "No comments! <br>";
+	}
 }
 
-
 function displayResult($data1, $type, $link, $linkColumn) {
+	$notEmpty = 1;
     if (mysql_num_rows($data1) > 0) {
         echo "<table border=1  <tr>";
         for ($i=0; $i < mysql_num_fields($data1); $i++){
@@ -142,12 +160,15 @@ function displayResult($data1, $type, $link, $linkColumn) {
         echo "</table>";
     }
     else {
-        echo "The return data is empty";
+        $notEmpty = 0;
     }
 	mysql_free_result($data1);
+	return $notEmpty;
 }
 
 ?>
+<br>
+<a href="add_comments.php"> Add comments </a>
 </body>
 
 </html>

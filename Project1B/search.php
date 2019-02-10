@@ -14,6 +14,8 @@
 	<a href="search.php"> Search </a>
 </div>
 
+<br>
+
 <form method="GET" action="search.php">
 	<input type="text" name="keyword">
 	<input type="radio" name="radio" value="1" checked>Movie 
