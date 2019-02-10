@@ -39,7 +39,7 @@ if($actor) {
 	
 	echo "<h3>Actor's basic information:</h3>";
 	
-	$query = sprintf("SELECT id, CONCAT(first, ' ', last) AS name, sex, dob, dod
+	$query = sprintf("SELECT id AS `Actor ID`, CONCAT(first, ' ', last) AS Name, sex AS Sex, dob AS `Date of Birth`, dod AS `Date of Dead`
 					  FROM Actor
 					  WHERE LOWER(CONCAT(first, ' ', last)) = LOWER('%s')",
 		     		  $actor);
@@ -51,7 +51,7 @@ if($actor) {
 
 	echo "<h3>The movies that the actor was in:</h3>";
 
-	$query = sprintf("SELECT title, year, shownMovie.name, shownMovie.role, rating, company
+	$query = sprintf("SELECT title AS Title, year AS Year, shownMovie.name As `Actor Name`, shownMovie.role AS `Actor Role`, rating AS Rating, company AS `Produce Company`
 					  FROM Movie,
 					  (
 					  	SELECT mid, target.name, role

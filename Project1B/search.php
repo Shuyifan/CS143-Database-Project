@@ -57,7 +57,12 @@ if($keyword) {
 								OR LOWER(last) like LOWER('%%%s%%')",
 								$pieces[0], $pieces[0]);
 				$output = mysql_query($query, $conn);
-				displayResult($output, "actor");
+				if(mysql_num_rows($output) == 0) {
+					echo "<h3>No such actor.</h3>";
+				} else {
+					echo "<h3>The searching result is shown as following:</h3>";
+					displayResult($output, "actor");
+				}
 			} else if(count($pieces) == 2) {
 				$query = sprintf("SELECT id, CONCAT(first, ' ', last) AS name, sex, dob, dod
 								FROM Actor
@@ -65,7 +70,12 @@ if($keyword) {
 								AND LOWER(last) like LOWER('%%%s%%')",
 								$pieces[0], $pieces[1]);
 				$output = mysql_query($query, $conn);
-				displayResult($output, "actor");
+				if(mysql_num_rows($output) == 0) {
+					echo "<h3>No such actor.</h3>";
+				} else {
+					echo "<h3>The searching result is shown as following:</h3>";
+					displayResult($output, "actor");
+				}
 			}
 		} else { // Do the multi-word search on actor
 			$pieces = explode(" ", $keyword);
@@ -79,7 +89,12 @@ if($keyword) {
 				$query = $query.$extend;
 			}
 			$output = mysql_query($query, $conn);
-			displayResult($output, "actor");
+			if(mysql_num_rows($output) == 0) {
+				echo "<h3>No such actor.</h3>";
+			} else {
+				echo "<h3>The searching result is shown as following:</h3>";
+				displayResult($output, "actor");
+			}
 		}
 	}
 
@@ -91,7 +106,12 @@ if($keyword) {
 							WHERE LOWER(title) LIKE LOWER('%%%s%%')",
 							$keyword);
 			$output = mysql_query($query, $conn);
-			displayResult($output, "movie");
+			if(mysql_num_rows($output) == 0) {
+				echo "<h3>No such movie.</h3>";
+			} else {
+				echo "<h3>The searching result is shown as following:</h3>";
+				displayResult($output, "movie");
+			}
 		} else { // Do the multi-word search on movie
 			$pieces = explode(" ", $keyword);
 			$query = sprintf("SELECT id, title, year, rating, company
@@ -104,7 +124,12 @@ if($keyword) {
 				$query = $query.$extend;
 			}
 			$output = mysql_query($query, $conn);
-			displayResult($output, "movie");
+			if(mysql_num_rows($output) == 0) {
+				echo "<h3>No such movie.</h3>";
+			} else {
+				echo "<h3>The searching result is shown as following:</h3>";
+				displayResult($output, "movie");
+			}
 		}
 	}
 

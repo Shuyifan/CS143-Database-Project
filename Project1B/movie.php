@@ -35,13 +35,22 @@ if($movie) {
 /**------------------------------------------------------------------------------------------------------- */
 // Print basic movie information	
 	
-	echo "<h3>Movie's basic information:</h3>";
+	echo "<h3>Movie's Basic Information:</h3>";
 	$query = sprintf("SELECT id, title, year, rating AS `MPAA rating`, company
 					  FROM Movie
 					  WHERE LOWER(title) = LOWER('%s')",
 		     		  $movie);
 	$output = mysql_query($query, $conn);
-	displayResult($output, "movie", false, 1);
+
+	$row = mysql_fetch_row($output);
+
+	echo "<font size=4>" . "<b>Title:</b> " . $row[1] . "<Br /></font>";
+	echo "<font size=4>" . "<b>Year:</b> " . $row[2] . "<Br /></font>";
+	echo "<font size=4>" . "<b>MPAA Rating:</b> " . $row[3] . "<Br /></font>";
+	echo "<font size=4>" . "<b>Produce Company:</b> " . $row[4] . "<Br /></font>";
+
+/**------------------------------------------------------------------------------------------------------- */
+// Print movie's director
 
 	$query = sprintf("SELECT CONCAT(first, ' ', last) AS name
 					  FROM Director, 
@@ -54,9 +63,16 @@ if($movie) {
 					  WHERE directorID.did = Director.id",
 					  $movie);
 	$output = mysql_query($query, $conn);
-	if(!displayResult($output, "movie", false, 1)) {
-		echo "No director information found!";
+	
+	if(mysql_num_rows($output) == 0) {
+		echo "<font size=4>" . "<b>Director:</b> " . "not available" . "<Br /></font>";
+	} else {
+		$row = mysql_fetch_row($output);
+		echo "<font size=4>" . "<b>Director:</b> " . $row[0] . "<Br /></font>";
 	}
+
+/**------------------------------------------------------------------------------------------------------- */
+// Print movie's genres
 
 	$query = sprintf("SELECT genre
 					  FROM Movie, MovieGenre
@@ -64,8 +80,21 @@ if($movie) {
 					  AND id = mid",
 					  $movie);
 	$output = mysql_query($query, $conn);
-	displayResult($output, "movie", false, 1);	
+	$rows = mysql_num_rows($output);
+	if(mysql_num_rows($output) == 0) {
+		echo "<font size=4>" . "<b>Genre:</b> " . "not available" . "<Br /></font>";
+	} else {
+		$row = mysql_fetch_row($output);
+		echo "<font size=4>" . "<b>Genre:</b> " . $row[0];
+		for ($i=1; $i < $rows; $i++){
+			$row = mysql_fetch_row($output);
+			echo ", " . $row[0];
+		}
+		echo "<Br /></font>";
+	}
 
+/**------------------------------------------------------------------------------------------------------- */
+// Print IMDB and ROT score
 	$query = sprintf("SELECT imdb, rot
 					  FROM Movie, MovieRating
 					  WHERE LOWER(title) = LOWER('%s')
@@ -73,9 +102,16 @@ if($movie) {
 					  $movie);
 
 	$output = mysql_query($query, $conn);
-	displayResult($output, "actor", false, 1);
+	$row = mysql_fetch_row($output);
+	echo "<font size=4>" . "<b>IMDB Score:</b> " . $row[0] . "<Br /></font>";
+	echo "<font size=4>" . "<b>ROT Score:</b> " . $row[1] . "<Br /></font>";
 
-	$query = sprintf("SELECT target.aid, CONCAT(first, ' ', last), role
+
+/**------------------------------------------------------------------------------------------------------- */
+// Print the list of actors for this movie
+	
+	echo "<h3>List of Actors for This Movie:</h3>";
+	$query = sprintf("SELECT CONCAT(first, ' ', last) AS Name, role AS Role
 					  FROM Actor,
 					  (
 					  	SELECT MovieActor.aid, role
@@ -84,14 +120,17 @@ if($movie) {
 					  	AND MovieActor.mid = Movie.id
 					  ) AS target
 					  WHERE target.aid = Actor.id
-					  ORDER BY aid",
+					  ORDER BY Name",
 					  $movie);
 
 	$output = mysql_query($query, $conn);
-	displayResult($output, "actor", true, 1);
+	displayResult($output, "actor", true, 0);
 
+/**------------------------------------------------------------------------------------------------------- */
+// Print the average score of the comment
 
-	$query = sprintf("SELECT AVG(rating) AS `average score`
+	echo "<h3>Acerage Rating from the Comments:</h3>";
+	$query = sprintf("SELECT AVG(rating) AS `Average Score`
 					  FROM Review,
 					  (
 					  	SELECT id
@@ -104,10 +143,13 @@ if($movie) {
 
 	$output = mysql_query($query, $conn);
 	if(!displayResult($output, "actor", false, 1)) {
-		echo "No user rating! <br>";
+		echo "<font size=4>" . "No user rating! <br>"  . "</font>";
 	}
 	
-	$query = sprintf("SELECT name, time, rating, comment
+/**------------------------------------------------------------------------------------------------------- */
+// Print all the comments
+	echo "<h3>Comments:</h3>";
+	$query = sprintf("SELECT name AS `User Name`, time AS `Time`, rating AS `Rating`, comment AS `Comment`
 					  FROM Review,
 					  (
 					  	SELECT id
@@ -120,7 +162,7 @@ if($movie) {
 
 	$output = mysql_query($query, $conn);
 	if(!displayResult($output, "actor", false, 1)) {
-		echo "No comments! <br>";
+		echo "<font size=4>" . "No comments for now. <br>" . "</font>";
 	}
 }
 
@@ -168,7 +210,7 @@ function displayResult($data1, $type, $link, $linkColumn) {
 
 ?>
 <br>
-<a href="add_comments.php"> Add comments </a>
+<a href="add_comments.php"> Add Comments </a>
 </body>
 
 </html>
