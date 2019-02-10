@@ -12,5 +12,12 @@
 			<a href="add_moviedirector.php"> Add a New Director to a Movie </a>
 			<a href="search.php"> Search </a>
 		</div>
+		<canvas id="canvas">
+			
+		</canvas>
+
+		<script type="text/javascript" src="main.js">
+
+    	</script>
 	</body>
 </html>

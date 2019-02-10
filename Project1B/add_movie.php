@@ -28,25 +28,25 @@
 		    <br>
 		    Company: <input type="text" name="Company" size=20 maxlength=20>
 		    <br>
-		    Genre: <input type="radio" name="Genre" value="Action"> Action
-		    	   <input type="radio" name="Genre" value="Adult"> Adult
-		    	   <input type="radio" name="Genre" value="Adventure"> Adventure
-		    	   <input type="radio" name="Genre" value="Animation"> Animation
-		    	   <input type="radio" name="Genre" value="Comedy"> Comedy
-		    	   <input type="radio" name="Genre" value="Crime"> Crime
-		    	   <input type="radio" name="Genre" value="Documentary"> Documentary
-		    	   <input type="radio" name="Genre" value="Drama"> Drama
-		    	   <input type="radio" name="Genre" value="Family"> Family
-		    	   <input type="radio" name="Genre" value="Fantasy"> Fantasy
-		    	   <input type="radio" name="Genre" value="Horror"> Horror
-		    	   <input type="radio" name="Genre" value="Musical"> Musical
-		    	   <input type="radio" name="Genre" value="Mystery"> Mystery
-		    	   <input type="radio" name="Genre" value="Romance"> Romance
-		    	   <input type="radio" name="Genre" value="Sci-Fi"> Sci-Fi
-		    	   <input type="radio" name="Genre" value="Short"> Short
-		    	   <input type="radio" name="Genre" value="Thriller"> Thriller
-		    	   <input type="radio" name="Genre" value="War"> War
-		    	   <input type="radio" name="Genre" value="Western"> Western
+		    Genre: <input type="checkbox" name="Genre" value="Action"> Action
+		    	   <input type="checkbox" name="Genre" value="Adult"> Adult
+		    	   <input type="checkbox" name="Genre" value="Adventure"> Adventure
+		    	   <input type="checkbox" name="Genre" value="Animation"> Animation
+		    	   <input type="checkbox" name="Genre" value="Comedy"> Comedy
+		    	   <input type="checkbox" name="Genre" value="Crime"> Crime
+		    	   <input type="checkbox" name="Genre" value="Documentary"> Documentary
+		    	   <input type="checkbox" name="Genre" value="Drama"> Drama
+		    	   <input type="checkbox" name="Genre" value="Family"> Family
+		    	   <input type="checkbox" name="Genre" value="Fantasy"> Fantasy
+		    	   <input type="checkbox" name="Genre" value="Horror"> Horror
+		    	   <input type="checkbox" name="Genre" value="Musical"> Musical
+		    	   <input type="checkbox" name="Genre" value="Mystery"> Mystery
+		    	   <input type="checkbox" name="Genre" value="Romance"> Romance
+		    	   <input type="checkbox" name="Genre" value="Sci-Fi"> Sci-Fi
+		    	   <input type="checkbox" name="Genre" value="Short"> Short
+		    	   <input type="checkbox" name="Genre" value="Thriller"> Thriller
+		    	   <input type="checkbox" name="Genre" value="War"> War
+		    	   <input type="checkbox" name="Genre" value="Western"> Western
 		    <br>
 		    <input type="submit" name="add" value="Submit">
 		</form>
